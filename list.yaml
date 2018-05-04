@@ -85,8 +85,7 @@ items:
         terminationGracePeriodSeconds: 30
         volumes:
         - name: data
-          persistentVolumeClaim:
-            claimName: redis-data
+          emptyDir: {}
     test: false
     triggers:
     - type: ConfigChange
@@ -97,7 +96,7 @@ items:
         from:
           kind: ImageStreamTag
           name: redis:latest
-          namespace: redis
+          namespace: infra-redis
       type: ImageChange
   status: {}
 - apiVersion: v1
@@ -179,7 +178,7 @@ items:
         from:
           kind: ImageStreamTag
           name: redis:latest
-          namespace: redis
+          namespace: infra-redis
       type: ImageChange
     - imageChangeParams:
         automatic: true
@@ -188,7 +187,7 @@ items:
         from:
           kind: ImageStreamTag
           name: redis:latest
-          namespace: redis
+          namespace: infra-redis
       type: ImageChange
     - type: ConfigChange
   status: {}
@@ -255,7 +254,7 @@ items:
         from:
           kind: ImageStreamTag
           name: redis:latest
-          namespace: redis
+          namespace: infra-redis
       type: ImageChange
   status: {}
 - apiVersion: v1
@@ -296,21 +295,6 @@ items:
     type: ClusterIP
   status:
     loadBalancer: {}
-- apiVersion: v1
-  kind: PersistentVolumeClaim
-  metadata:
-    annotations:
-    creationTimestamp: null
-    labels:
-    name: redis-data
-  spec:
-    accessModes:
-    - ReadWriteMany
-    resources:
-      requests:
-        storage: 1Gi
-    volumeName: redis-data-volume
-  status: {}
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
