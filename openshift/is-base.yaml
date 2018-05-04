@@ -7,4 +7,4 @@ metadata:
     name: centos7-base
   name: centos7
 spec:
-  dockerImageRepository: centos/centos7
+  dockerImageRepository: centos:7
