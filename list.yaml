@@ -84,8 +84,9 @@ items:
         securityContext: {}
         terminationGracePeriodSeconds: 30
         volumes:
-        - emptyDir: {}
-          name: data
+        - name: data
+          persistentVolumeClaim:
+            claimName: redis-data
     test: false
     triggers:
     - type: ConfigChange
@@ -166,8 +167,9 @@ items:
         securityContext: {}
         terminationGracePeriodSeconds: 30
         volumes:
-        - emptyDir: {}
-          name: data
+        - name: data
+          persistentVolumeClaim:
+            claimName: redis-master-data
     test: false
     triggers:
     - imageChangeParams:
@@ -240,8 +242,9 @@ items:
         securityContext: {}
         terminationGracePeriodSeconds: 30
         volumes:
-        - emptyDir: {}
-          name: data
+        - name: data
+          persistentVolumeClaim:
+            claimName: redis-sentinel-data
     test: false
     triggers:
     - type: ConfigChange
@@ -293,5 +296,50 @@ items:
     type: ClusterIP
   status:
     loadBalancer: {}
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    annotations:
+    creationTimestamp: null
+    labels:
+    name: redis-data
+  spec:
+    accessModes:
+    - ReadWriteMany
+    resources:
+      requests:
+        storage: 1Gi
+    volumeName: redis-data-volume
+  status: {}
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    annotations:
+    creationTimestamp: null
+    labels:
+    name: redis-master-data
+  spec:
+    accessModes:
+    - ReadWriteMany
+    resources:
+      requests:
+        storage: 1Gi
+    volumeName: redis-master-data-volume
+  status: {}
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    annotations:
+    creationTimestamp: null
+    labels:
+    name: redis-sentinel-data
+  spec:
+    accessModes:
+    - ReadWriteMany
+    resources:
+      requests:
+        storage: 1Gi
+    volumeName: redis-sentinel-data-volume
+  status: {}
 kind: List
 metadata: {}
